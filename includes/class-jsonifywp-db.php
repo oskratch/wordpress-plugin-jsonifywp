@@ -17,6 +17,9 @@ class JsonifyWP_DB {
             idioma VARCHAR(10) NOT NULL,
             api_url TEXT NOT NULL,
             template VARCHAR(100) NOT NULL DEFAULT 'default.php',
+            detail_template VARCHAR(100) NOT NULL DEFAULT 'default_detail.php',
+            detail_page_url VARCHAR(255) NOT NULL DEFAULT '',
+            detail_api_field VARCHAR(100) NOT NULL DEFAULT 'employee_profile',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
         ) $charset_collate;";
@@ -24,7 +27,7 @@ class JsonifyWP_DB {
         dbDelta($sql);
     }
 
-    public static function insert($titol, $idioma, $api_url, $template) {
+    public static function insert($titol, $idioma, $api_url, $template, $detail_template, $detail_page_url, $detail_api_field) {
         global $wpdb;
         $wpdb->insert(
             self::table_name(),
@@ -32,14 +35,17 @@ class JsonifyWP_DB {
                 'titol' => $titol,
                 'idioma' => $idioma,
                 'api_url' => $api_url,
-                'template' => $template
+                'template' => $template,
+                'detail_template' => $detail_template,
+                'detail_page_url' => $detail_page_url,
+                'detail_api_field' => $detail_api_field
             ],
-            ['%s', '%s', '%s', '%s']
+            ['%s', '%s', '%s', '%s', '%s', '%s', '%s']
         );
         return $wpdb->insert_id;
     }
 
-    public static function update($id, $titol, $idioma, $api_url, $template) {
+    public static function update($id, $titol, $idioma, $api_url, $template, $detail_template, $detail_page_url, $detail_api_field) {
         global $wpdb;
         return $wpdb->update(
             self::table_name(),
@@ -47,10 +53,13 @@ class JsonifyWP_DB {
                 'titol' => $titol,
                 'idioma' => $idioma,
                 'api_url' => $api_url,
-                'template' => $template
+                'template' => $template,
+                'detail_template' => $detail_template,
+                'detail_page_url' => $detail_page_url,
+                'detail_api_field' => $detail_api_field
             ],
             ['id' => $id],
-            ['%s', '%s', '%s', '%s'],
+            ['%s', '%s', '%s', '%s', '%s', '%s', '%s'],
             ['%d']
         );
     }
