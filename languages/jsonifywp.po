@@ -1,0 +1,122 @@
+msgid "JsonifyWP"
+msgstr "JsonifyWP"
+
+msgid "Entries"
+msgstr "Entries"
+
+msgid "Add New"
+msgstr "Add New"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Are you sure you want to delete?"
+msgstr "Are you sure you want to delete?"
+
+msgid "No entries found."
+msgstr "No entries found."
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "API URL"
+msgstr "API URL"
+
+msgid "List Template"
+msgstr "List Template"
+
+msgid "Detail Template"
+msgstr "Detail Template"
+
+msgid "Detail Page URL"
+msgstr "Detail Page URL"
+
+msgid "Detail API Field"
+msgstr "Detail API Field"
+
+msgid "Record created."
+msgstr "Record created."
+
+msgid "Record updated."
+msgstr "Record updated."
+
+msgid "Record deleted."
+msgstr "Record deleted."
+
+msgid "Error retrieving data from the API."
+msgstr "Error retrieving data from the API."
+
+msgid "Invalid data format."
+msgstr "Invalid data format."
+
+msgid "Detail not available."
+msgstr "Detail not available."
+
+msgid "Select the template to display the list."
+msgstr "Select the template to display the list."
+
+msgid "Select the template to display the detail."
+msgstr "Select the template to display the detail."
+
+msgid "Choose a language."
+msgstr "Choose a language."
+
+msgid "Enter the API URL."
+msgstr "Enter the API URL."
+
+msgid "Select a detail API field."
+msgstr "Select a detail API field."
+
+msgid "Select a detail page URL."
+msgstr "Select a detail page URL."
+
+msgid "Add Entry"
+msgstr "Add Entry"
+
+msgid "Edit Entry"
+msgstr "Edit Entry"
+
+msgid "Manage Entries"
+msgstr "Manage Entries"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Save Changes"
+msgstr "Save Changes"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Endpoints"
+msgstr "Endpoints"
+
+msgid "Below is a list of all the created endpoints. These endpoints must return a JSON response for listing records. You can edit or delete them as needed."
+msgstr "Below is a list of all the created endpoints. These endpoints must return a JSON response for listing records. You can edit or delete them as needed."
+
+msgid "Choose the template to display the list."
+msgstr "Choose the template to display the list."
+
+msgid "Choose the template to display the detail."
+msgstr "Choose the template to display the detail."
+
+msgid "Relative URL of the detail page (e.g.: /detail/)."
+msgstr "Relative URL of the detail page (e.g.: /detail/)."
+
+msgid "On the corresponding detail page you must add this shortcode for it to work:"
+msgstr "On the corresponding detail page you must add this shortcode for it to work:"
+
+msgid "Name of the JSON field in the list that contains the detail API URL (e.g.: employee_profile)"
+msgstr "Name of the JSON field in the list that contains the detail API URL (e.g.: employee_profile)"

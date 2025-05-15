@@ -1,26 +1,26 @@
 <?php
-// $json conté el JSON decodificat de l'API de detall
+// $json contains the decoded JSON from the detail API
 
 if (is_array($json)) {
-    // Traducció preparada
+    // Translation ready
     $labels = [
         'fullname'       => __('Full Name', 'jsonifywp'),
-        'direct_phone'   => __('Correu electrònic', 'jsonifywp'),
-        'extension'      => __('Extensió', 'jsonifywp'),
-        'office'         => __('Despatx', 'jsonifywp'),
-        'web'            => __('Web', 'jsonifywp'),
-        'research_lines' => __('Línies de recerca', 'jsonifywp'),
-        'research_description' => __('Línies de recerca', 'jsonifywp'),
-        'publications' => __('Publicacions Seleccionades i/o Característiques', 'jsonifywp'),
+        'direct_phone'   => __('Email', 'jsonifywp'),
+        'extension'      => __('Extension', 'jsonifywp'),
+        'office'         => __('Office', 'jsonifywp'),
+        'web'            => __('Website', 'jsonifywp'),
+        'research_lines' => __('Research Lines', 'jsonifywp'),
+        'research_description' => __('Research Description', 'jsonifywp'),
+        'publications' => __('Selected and/or Featured Publications', 'jsonifywp'),
     ];
 
-    // Mostra el nom complet
+    // Show full name
     if (!empty($json['fullname'])) {
         echo '<h3>' . esc_html($json['fullname']) . '</h3>';
     }
 
     echo '<ul>';
-    // Mostra els camps segons l'ordre i etiqueta
+    // Show fields in order with label
     if (!empty($json['direct_phone'])) {
         echo '<li>' . esc_html($labels['direct_phone']) . ': ' . esc_html($json['direct_phone']) . '</li>';
     }
@@ -35,7 +35,7 @@ if (is_array($json)) {
     }
     echo '</ul>';
 
-    // Línies de recerca
+    // Research lines
     if (!empty($json['research_lines']) && is_array($json['research_lines'])) {
         echo '<h4>' . esc_html($labels['research_lines']) . '</h4>';
         echo '<ul>';
@@ -49,7 +49,7 @@ if (is_array($json)) {
         echo '<p>' . esc_html($json['research_description']) . '</p>';
     }
 
-    // Publicacions
+    // Publications
     if (!empty($json['publications']) && is_array($json['publications'])) {
         echo '<h4>' . esc_html($labels['publications']) . '</h4>';
         echo '<ul>';

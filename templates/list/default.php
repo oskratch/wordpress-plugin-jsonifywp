@@ -1,5 +1,5 @@
 <?php
-// $json conté el JSON decodificat
+// $json contains the decoded JSON
 if (is_array($json)) {
     foreach ($json as $index => $item) {
         ?>

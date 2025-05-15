@@ -1,0 +1,135 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
+
+msgid "JsonifyWP"
+msgstr "JsonifyWP"
+
+msgid "Entries"
+msgstr "Entrades"
+
+msgid "Add New"
+msgstr "Afegeix una nova"
+
+msgid "Edit"
+msgstr "Edita"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Are you sure you want to delete?"
+msgstr "Estàs segur que vols eliminar-ho?"
+
+msgid "No entries found."
+msgstr "No s'han trobat entrades."
+
+msgid "Title"
+msgstr "Títol"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "API URL"
+msgstr "URL de l'API"
+
+msgid "List Template"
+msgstr "Plantilla de llista"
+
+msgid "Detail Template"
+msgstr "Plantilla de detall"
+
+msgid "Detail Page URL"
+msgstr "URL de la pàgina de detall"
+
+msgid "Detail API Field"
+msgstr "Camp de detall de l'API"
+
+msgid "Record created."
+msgstr "Registre creat."
+
+msgid "Record updated."
+msgstr "Registre actualitzat."
+
+msgid "Record deleted."
+msgstr "Registre eliminat."
+
+msgid "Error retrieving data from the API."
+msgstr "Error en recuperar dades de l'API."
+
+msgid "Invalid data format."
+msgstr "Format de dades no vàlid."
+
+msgid "Detail not available."
+msgstr "Detall no disponible."
+
+msgid "Select the template to display the list."
+msgstr "Selecciona la plantilla per mostrar la llista."
+
+msgid "Select the template to display the detail."
+msgstr "Selecciona la plantilla per mostrar el detall."
+
+msgid "Choose a language."
+msgstr "Tria un idioma."
+
+msgid "Enter the API URL."
+msgstr "Introdueix la URL de l'API."
+
+msgid "Select a detail API field."
+msgstr "Selecciona un camp de detall de l'API."
+
+msgid "Select a detail page URL."
+msgstr "Selecciona una URL de pàgina de detall."
+
+msgid "Add Entry"
+msgstr "Afegeix entrada"
+
+msgid "Edit Entry"
+msgstr "Edita entrada"
+
+msgid "Manage Entries"
+msgstr "Gestiona entrades"
+
+msgid "Settings"
+msgstr "Configuració"
+
+msgid "Save Changes"
+msgstr "Desa els canvis"
+
+msgid "Actions"
+msgstr "Accions"
+
+msgid "Add"
+msgstr "Afegeix"
+
+msgid "Update"
+msgstr "Actualitza"
+
+msgid "Endpoints"
+msgstr "Endpoints"
+
+msgid "Below is a list of all the created endpoints. These endpoints must return a JSON response for listing records. You can edit or delete them as needed."
+msgstr "A continuació es mostra una llista de tots els endpoints creats. Aquests endpoints han de retornar una resposta JSON per llistar els registres. Pots editar-los o eliminar-los segons sigui necessari."
+
+msgid "Choose the template to display the list."
+msgstr "Tria la plantilla per mostrar la llista."
+
+msgid "Choose the template to display the detail."
+msgstr "Tria la plantilla per mostrar el detall."
+
+msgid "Relative URL of the detail page (e.g.: /detail/)."
+msgstr "URL relativa de la pàgina de detall (p. ex.: /detail/)."
+
+msgid "On the corresponding detail page you must add this shortcode for it to work:"
+msgstr "A la pàgina de detall corresponent has d'afegir aquest shortcode perquè funcioni:"
+
+msgid "Name of the JSON field in the list that contains the detail API URL (e.g.: employee_profile)"
+msgstr "Nom del camp JSON a la llista que conté la URL de l'API de detall (p. ex.: employee_profile)"

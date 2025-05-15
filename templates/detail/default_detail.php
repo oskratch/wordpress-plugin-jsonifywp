@@ -1,5 +1,5 @@
 <?php
-// $json conté el JSON decodificat de l'API de detall
+// $json contains the decoded JSON from the detail API
 if (is_array($json)) {
     foreach ($json as $key => $value) {
         ?>

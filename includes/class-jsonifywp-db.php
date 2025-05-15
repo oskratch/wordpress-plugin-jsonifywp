@@ -13,10 +13,10 @@ class JsonifyWP_DB {
         $charset_collate = $wpdb->get_charset_collate();
         $sql = "CREATE TABLE $table (
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-            titol VARCHAR(255) NOT NULL,
-            idioma VARCHAR(10) NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            language VARCHAR(10) NOT NULL,
             api_url TEXT NOT NULL,
-            template VARCHAR(100) NOT NULL DEFAULT 'default.php',
+            list_template VARCHAR(100) NOT NULL DEFAULT 'default.php',
             detail_template VARCHAR(100) NOT NULL DEFAULT 'default_detail.php',
             detail_page_url VARCHAR(255) NOT NULL DEFAULT '',
             detail_api_field VARCHAR(100) NOT NULL DEFAULT 'employee_profile',
@@ -27,15 +27,15 @@ class JsonifyWP_DB {
         dbDelta($sql);
     }
 
-    public static function insert($titol, $idioma, $api_url, $template, $detail_template, $detail_page_url, $detail_api_field) {
+    public static function insert($title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field) {
         global $wpdb;
         $wpdb->insert(
             self::table_name(),
             [
-                'titol' => $titol,
-                'idioma' => $idioma,
+                'title' => $title,
+                'language' => $language,
                 'api_url' => $api_url,
-                'template' => $template,
+                'list_template' => $list_template,
                 'detail_template' => $detail_template,
                 'detail_page_url' => $detail_page_url,
                 'detail_api_field' => $detail_api_field
@@ -45,15 +45,15 @@ class JsonifyWP_DB {
         return $wpdb->insert_id;
     }
 
-    public static function update($id, $titol, $idioma, $api_url, $template, $detail_template, $detail_page_url, $detail_api_field) {
+    public static function update($id, $title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field) {
         global $wpdb;
         return $wpdb->update(
             self::table_name(),
             [
-                'titol' => $titol,
-                'idioma' => $idioma,
+                'title' => $title,
+                'language' => $language,
                 'api_url' => $api_url,
-                'template' => $template,
+                'list_template' => $list_template,
                 'detail_template' => $detail_template,
                 'detail_page_url' => $detail_page_url,
                 'detail_api_field' => $detail_api_field
