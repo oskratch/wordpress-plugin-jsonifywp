@@ -133,3 +133,30 @@ msgstr "En la página de detalle correspondiente debe añadir este shortcode par
 
 msgid "Name of the JSON field in the list that contains the detail API URL (e.g.: employee_profile)"
 msgstr "Nombre del campo JSON en la lista que contiene la URL de la API de detalle (ej.: employee_profile)"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "More info"
+msgstr "Más información"
+
+msgid "Office"
+msgstr "Despacho"
+
+msgid "Research"
+msgstr "Investigación"
+
+msgid "Website"
+msgstr "Web"
+
+msgid "Research Lines"
+msgstr "Líneas de investigación"
+
+msgid "Research Description"
+msgstr "Descripción de la investigación"
+
+msgid "Selected and/or Featured Publications"
+msgstr "Publicaciones seleccionadas y/o destacadas"
+
+msgid "Back"
+msgstr "Volver"

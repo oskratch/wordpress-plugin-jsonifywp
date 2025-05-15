@@ -5,7 +5,7 @@ if (is_array($json)) {
     // Translation ready
     $labels = [
         'fullname'       => __('Full Name', 'jsonifywp'),
-        'direct_phone'   => __('Email', 'jsonifywp'),
+        'direct_phone'   => __('Phone', 'jsonifywp'),
         'extension'      => __('Extension', 'jsonifywp'),
         'office'         => __('Office', 'jsonifywp'),
         'web'            => __('Website', 'jsonifywp'),
@@ -16,10 +16,10 @@ if (is_array($json)) {
 
     // Show full name
     if (!empty($json['fullname'])) {
-        echo '<h3>' . esc_html($json['fullname']) . '</h3>';
+        echo '<h3 class="elementor-heading-title elementor-size-default" style="margin-bottom:5px;">' . esc_html($json['fullname']) . '</h3>';
     }
 
-    echo '<ul>';
+    echo '<ul style="padding-left: 15px;">';
     // Show fields in order with label
     if (!empty($json['direct_phone'])) {
         echo '<li>' . esc_html($labels['direct_phone']) . ': ' . esc_html($json['direct_phone']) . '</li>';
@@ -31,14 +31,15 @@ if (is_array($json)) {
         echo '<li>' . esc_html($labels['office']) . ': ' . esc_html($json['office']) . '</li>';
     }
     if (!empty($json['web'])) {
-        echo '<li>' . esc_html($labels['web']) . ': ' . esc_html($json['web']) . '</li>';
+        $web_url = esc_url($json['web']);
+        echo '<li>' . esc_html($labels['web']) . ': <a href="' . $web_url . '" target="_blank" rel="noopener noreferrer">' . $web_url . '</a></li>';
     }
     echo '</ul>';
 
     // Research lines
     if (!empty($json['research_lines']) && is_array($json['research_lines'])) {
-        echo '<h4>' . esc_html($labels['research_lines']) . '</h4>';
-        echo '<ul>';
+        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['research_lines']) . '</h4>';
+        echo '<ul style="padding-left: 15px; margin-bottom:10px;">';
         foreach ($json['research_lines'] as $line) {
             echo '<li>' . esc_html($line) . '</li>';
         }
@@ -51,12 +52,25 @@ if (is_array($json)) {
 
     // Publications
     if (!empty($json['publications']) && is_array($json['publications'])) {
-        echo '<h4>' . esc_html($labels['publications']) . '</h4>';
-        echo '<ul>';
+        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['publications']) . '</h4>';
+        echo '<ul style="padding-left: 15px;">';
         foreach ($json['publications'] as $line) {
             echo '<li>' . esc_html($line) . '</li>';
         }
         echo '</ul>';
     }
 }
+?>
+<?php
+// Get translated "Back" label
+$back_label = __('Back', 'jsonifywp');
+
+// Get previous page URL (fallback to home if not set)
+$prev_url = isset($_SERVER['HTTP_REFERER']) ? esc_url($_SERVER['HTTP_REFERER']) : home_url();
+
+echo '<div class="jws_pagination jws_ajax" style="text-align: left;">';
+echo '<a class="jws-load-more" style="margin-top:40px;" href="' . $prev_url . '">';
+echo '<span>' . esc_html($back_label) . '</span>';
+echo '</a>';
+echo '</div>';
 ?>

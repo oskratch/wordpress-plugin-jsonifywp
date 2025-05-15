@@ -3,7 +3,7 @@
 Plugin Name: JsonifyWP
 Description: Plugin to manage custom entries with its own table and shortcode, providing JSON integration.
 Version: 1.0
-Author: Oscar Periche
+Author: <a href="https://metalinked.net" target="_blank">Oscar Periche | Metalinked</a>
 */
 
 if (!defined('ABSPATH')) exit;
