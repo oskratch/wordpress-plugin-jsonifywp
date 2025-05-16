@@ -1,10 +1,18 @@
 <?php
 /*
-Plugin Name: JsonifyWP
-Description: Plugin to manage custom entries with its own table and shortcode, providing JSON integration.
-Version: 1.0
-Author: <a href="https://metalinked.net" target="_blank">Oscar Periche | Metalinked</a>
-*/
+ * Plugin Name: JsonifyWP
+ * Plugin URI: https://github.com/oskratch/wordpress-jsonifywp
+ * Description: Plugin to manage custom entries with its own table and shortcode, providing JSON integration.
+ * Author: Oscar Periche, Metalinked
+ * Author URI: https://metalinked.net/
+ * Version: 1.0
+ * Requires at least: 6.3
+ * Requires PHP: 8
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Copyright (c) 2025 Oscar Periche, Metalinked
+ */
 
 if (!defined('ABSPATH')) exit;
 
