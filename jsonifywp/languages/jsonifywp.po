@@ -28,6 +28,9 @@ msgstr "Language"
 msgid "API URL"
 msgstr "API URL"
 
+msgid "API DOMAIN"
+msgstr "API DOMAIN"
+
 msgid "List Template"
 msgstr "List Template"
 

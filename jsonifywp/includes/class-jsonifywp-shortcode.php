@@ -7,6 +7,19 @@ Author: <a href="https://metalinked.net" target="_blank">Oscar Periche | Metalin
 */
 
 if (!defined('ABSPATH')) exit;
+/**
+ * Prepend domain to URL if not absolute.
+ *
+ * @param string $url
+ * @param string $domain
+ * @return string
+ */
+function jsonifywp_prepend_domain_if_needed($url, $domain) {
+    if (strpos($url, 'http') !== 0 && !empty($domain)) {
+        return rtrim($domain, '/') . '/' . ltrim($url, '/');
+    }
+    return $url;
+}
 
 // List shortcode
 add_shortcode('jsonifywp', function($atts) {
@@ -16,8 +29,11 @@ add_shortcode('jsonifywp', function($atts) {
     $item = JsonifyWP_DB::get($id);
     if (!$item) return '';
 
+    // Comprova si api_url comença per http, si no, afegeix api_domain al principi
+    $api_url = jsonifywp_prepend_domain_if_needed($item->api_url, $item->api_domain);
+
     // Main API call
-    $response = wp_remote_get($item->api_url);
+    $response = wp_remote_get($api_url);
     if (is_wp_error($response)) return '<p>Error retrieving data from the API.</p>';
     $body = wp_remote_retrieve_body($response);
     $json = json_decode($body, true);
@@ -49,7 +65,10 @@ add_shortcode('jsonifywp_detail', function($atts) {
     if (!$type) return '<p>Type not found.</p>';
 
     // Main API call
-    $response = wp_remote_get($type->api_url);
+    // Comprova si api_url comença per http, si no, afegeix api_domain al principi
+    $api_url = jsonifywp_prepend_domain_if_needed($type->api_url, $type->api_domain);
+
+    $response = wp_remote_get($api_url);
     if (is_wp_error($response)) return '<p>Error retrieving data from the API.</p>';
     $body = wp_remote_retrieve_body($response);
     $json = json_decode($body, true);
@@ -57,6 +76,8 @@ add_shortcode('jsonifywp_detail', function($atts) {
     $field = isset($type->detail_api_field) && $type->detail_api_field ? $type->detail_api_field : 'employee_profile';
     if (!is_array($json) || !isset($json[$item_index][$field])) return '<p>Record not found.</p>';
     $profile_url = $json[$item_index][$field];
+
+    $profile_url = jsonifywp_prepend_domain_if_needed($profile_url, $type->api_domain);
 
     // Detail API call
     $profile_response = wp_remote_get($profile_url);

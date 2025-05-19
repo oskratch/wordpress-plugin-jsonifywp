@@ -41,6 +41,9 @@ msgstr "Idioma"
 msgid "API URL"
 msgstr "URL de la API"
 
+msgid "API DOMAIN"
+msgstr "Dominio de la API"
+
 msgid "List Template"
 msgstr "Plantilla de lista"
 

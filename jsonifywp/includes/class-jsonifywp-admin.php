@@ -50,6 +50,7 @@ class JsonifyWP_Admin {
                     <tr>
                         <th><?php _e('Title', 'jsonifywp'); ?></th>
                         <th><?php _e('Language', 'jsonifywp'); ?></th>
+                        <th><?php _e('API DOMAIN', 'jsonifywp'); ?></th>
                         <th><?php _e('API URL', 'jsonifywp'); ?></th>
                         <th><?php _e('List Template', 'jsonifywp'); ?></th>
                         <th><?php _e('Detail Template', 'jsonifywp'); ?></th>
@@ -68,6 +69,7 @@ class JsonifyWP_Admin {
                     <tr>
                         <td><?php echo esc_html($item->title); ?></td>
                         <td><?php echo esc_html($item->language); ?></td>
+                        <td><?php echo esc_html($item->api_domain); ?></td>
                         <td><?php echo esc_html($item->api_url); ?></td>
                         <td><?php echo esc_html($item->list_template); ?></td>
                         <td><?php echo esc_html($item->detail_template); ?></td>
@@ -92,6 +94,7 @@ class JsonifyWP_Admin {
             'id' => '',
             'title' => '',
             'language' => '',
+            'api_domain' => '',
             'api_url' => '',
             'list_template' => 'default.php',
             'detail_template' => 'default_detail.php',
@@ -118,16 +121,19 @@ class JsonifyWP_Admin {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['jsonifywp_nonce']) && wp_verify_nonce($_POST['jsonifywp_nonce'], 'jsonifywp_save')) {
             $title = sanitize_text_field($_POST['title']);
             $language = sanitize_text_field($_POST['language']);
+            $api_domain = sanitize_text_field($_POST['api_domain']);
+            // Remove trailing slash if present
+            $api_domain = rtrim($api_domain, '/');
             $api_url = esc_url_raw($_POST['api_url']);
             $list_template = sanitize_file_name($_POST['list_template']);
             $detail_template = sanitize_file_name($_POST['detail_template']);
             $detail_page_url = sanitize_text_field($_POST['detail_page_url']);
             $detail_api_field = sanitize_text_field($_POST['detail_api_field']);
             if ($editing) {
-                JsonifyWP_DB::update($item->id, $title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
+                JsonifyWP_DB::update($item->id, $title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
                 echo '<div class="notice notice-success"><p>' . __('Record updated.', 'jsonifywp') . '</p></div>';
             } else {
-                JsonifyWP_DB::insert($title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
+                JsonifyWP_DB::insert($title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
                 echo '<div class="notice notice-success"><p>' . __('Record created.', 'jsonifywp') . '</p></div>';
             }
             // Redirect to list
@@ -155,6 +161,9 @@ class JsonifyWP_Admin {
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <th><label for="api_domain"><?php _e('API Domain', 'jsonifywp'); ?></label></th>
+                        <td><input type="url" name="api_domain" id="api_domain" value="<?php echo esc_attr($item->api_domain); ?>" class="regular-text" required></td>
                     <tr>
                         <th><label for="api_url"><?php _e("API URL", 'jsonifywp'); ?></label></th>
                         <td><input type="url" name="api_url" id="api_url" value="<?php echo esc_attr($item->api_url); ?>" class="regular-text" required></td>

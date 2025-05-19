@@ -22,6 +22,7 @@ class JsonifyWP_DB {
             id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
             title VARCHAR(255) NOT NULL,
             language VARCHAR(10) NOT NULL,
+            api_domain TEXT NOT NULL,
             api_url TEXT NOT NULL,
             list_template VARCHAR(100) NOT NULL DEFAULT 'default.php',
             detail_template VARCHAR(100) NOT NULL DEFAULT 'default_detail.php',
@@ -34,31 +35,33 @@ class JsonifyWP_DB {
         dbDelta($sql);
     }
 
-    public static function insert($title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field) {
+    public static function insert($title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field) {
         global $wpdb;
         $wpdb->insert(
             self::table_name(),
             [
                 'title' => $title,
                 'language' => $language,
+                'api_domain' => $api_domain,
                 'api_url' => $api_url,
                 'list_template' => $list_template,
                 'detail_template' => $detail_template,
                 'detail_page_url' => $detail_page_url,
                 'detail_api_field' => $detail_api_field
             ],
-            ['%s', '%s', '%s', '%s', '%s', '%s', '%s']
+            ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
         );
         return $wpdb->insert_id;
     }
 
-    public static function update($id, $title, $language, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field) {
+    public static function update($id, $title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field = '') {
         global $wpdb;
         return $wpdb->update(
             self::table_name(),
             [
                 'title' => $title,
                 'language' => $language,
+                'api_domain' => $api_domain,
                 'api_url' => $api_url,
                 'list_template' => $list_template,
                 'detail_template' => $detail_template,
@@ -66,7 +69,7 @@ class JsonifyWP_DB {
                 'detail_api_field' => $detail_api_field
             ],
             ['id' => $id],
-            ['%s', '%s', '%s', '%s', '%s', '%s', '%s'],
+            ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'],
             ['%d']
         );
     }
