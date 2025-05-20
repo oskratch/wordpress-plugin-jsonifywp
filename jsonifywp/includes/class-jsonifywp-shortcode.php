@@ -29,7 +29,7 @@ add_shortcode('jsonifywp', function($atts) {
     $item = JsonifyWP_DB::get($id);
     if (!$item) return '';
 
-    // Comprova si api_url comença per http, si no, afegeix api_domain al principi
+    // Check if api_url starts with http, if not, prepend api_domain
     $api_url = jsonifywp_prepend_domain_if_needed($item->api_url, $item->api_domain);
 
     // Main API call
@@ -48,7 +48,7 @@ add_shortcode('jsonifywp', function($atts) {
     $json_data = $json;
     $json = $json;
     $type_id = $item->id;
-    $item_obj = $item; // <-- This line makes the full record accessible to the template
+    $item_obj = $item; // This line makes the full record accessible to the template
 
     ob_start();
     include $template_file;
@@ -65,7 +65,7 @@ add_shortcode('jsonifywp_detail', function($atts) {
     if (!$type) return '<p>Type not found.</p>';
 
     // Main API call
-    // Comprova si api_url comença per http, si no, afegeix api_domain al principi
+    // Check if api_url starts with http, if not, prepend api_domain
     $api_url = jsonifywp_prepend_domain_if_needed($type->api_url, $type->api_domain);
 
     $response = wp_remote_get($api_url);

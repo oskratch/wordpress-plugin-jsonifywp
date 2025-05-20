@@ -9,7 +9,7 @@ if (is_array($json)) {
             <?php endforeach; ?>
             <?php if (isset($item['employee_profile'])): ?>
                 <a href="<?php echo esc_url(add_query_arg(['jsonifywp_id' => $type_id, 'item' => $index], $item_obj->detail_page_url)); ?>">
-                    Veure detall
+                    <?php _e('View detail', 'jsonifywp'); ?>
                 </a>
             <?php endif; ?>
         </div>

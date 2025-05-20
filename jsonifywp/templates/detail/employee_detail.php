@@ -38,24 +38,30 @@ if (is_array($json)) {
 
     // Research lines
     if (!empty($json['research_lines']) && is_array($json['research_lines'])) {
-        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['research_lines']) . '</h4>';
+        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['research_lines']) . '</h5>';
         echo '<ul style="padding-left: 15px; margin-bottom:10px;">';
         foreach ($json['research_lines'] as $line) {
-            echo '<li>' . esc_html($line) . '</li>';
+            // Allow basic HTML tags
+            $line = nl2br(wp_kses($line, ['br' => [], 'p' => [], 'strong' => [], 'em' => [], 'b' => [], 'i' => []]));
+            echo '<li>' . $line . '</li>';
         }
         echo '</ul>';
     }
     
     if (!empty($json['research_description'])) {
-        echo '<p>' . esc_html($json['research_description']) . '</p>';
+        // Allow basic HTML tags
+        $desc = nl2br(wp_kses($json['research_description'], ['br' => [], 'p' => [], 'strong' => [], 'em' => [], 'b' => [], 'i' => []]));
+        echo '<p>' . $desc . '</p>';
     }
 
     // Publications
     if (!empty($json['publications']) && is_array($json['publications'])) {
-        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['publications']) . '</h4>';
+        echo '<h5 style="margin-top:20px; margin-bottom:5px;">' . esc_html($labels['publications']) . '</h5>';
         echo '<ul style="padding-left: 15px;">';
         foreach ($json['publications'] as $line) {
-            echo '<li>' . esc_html($line) . '</li>';
+            // Allow basic HTML tags
+            $line = nl2br(wp_kses($line, ['br' => [], 'p' => [], 'strong' => [], 'em' => [], 'b' => [], 'i' => []]));
+            echo '<li>' . $line . '</li>';
         }
         echo '</ul>';
     }

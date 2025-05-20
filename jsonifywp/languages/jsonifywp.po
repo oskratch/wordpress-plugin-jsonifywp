@@ -150,3 +150,6 @@ msgstr "Selected and/or Featured Publications"
 
 msgid "Back"
 msgstr "Back"
+
+msgid "View detail"
+msgstr "View detail"

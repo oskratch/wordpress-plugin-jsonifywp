@@ -163,3 +163,6 @@ msgstr "Publicacions seleccionades i/o destacades"
 
 msgid "Back"
 msgstr "Tornar"
+
+msgid "View detail"
+msgstr "Veure detall"
