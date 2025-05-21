@@ -46,7 +46,8 @@ Or, as an alias (also supported):
     ```
     [jsonifywp_detail]
     ```
-2. JsonifyWP will automatically use the `jsonifywp_id` and `item` parameters from the URL, e.g.:
+2. In the JsonifyWP admin, make sure to set the **Detail page URL** field for each API endpoint to match the slug of this detail page (e.g., `detail` or `employees`). This tells the plugin where to link for detail views.
+3. JsonifyWP will automatically use the `jsonifywp_id` and `item` parameters from the URL, for example:
     ```
     /employees/?jsonifywp_id=1&item=2
     ```
@@ -65,7 +66,8 @@ Or, as an alias (also supported):
 
 When creating or editing an endpoint, you can configure:
 - **Title**
-- **Language**
+- **Language** (for display purposes only; currently, language selection does not affect API requests. The API URL itself should include any language parameters required by your API, if supported.)
+- **API domain** (optional base domain to prepend to detail URLs if the URLs returned in the list are relative or missing the domain)
 - **API URL** (main list)
 - **List template** (from `templates/list/`)
 - **Detail template** (from `templates/detail/`)

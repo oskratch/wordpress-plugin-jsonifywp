@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 - Work in progress.
 
+## [1.2.1] - 2025-05-20
+### Added
+- Paginator to one of the sample templates (members.php).
+
 ## [1.2.0] - 2025-05-15
 ### Added
 - Multi-language support with English as the default language.
