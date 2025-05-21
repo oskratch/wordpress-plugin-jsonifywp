@@ -153,3 +153,9 @@ msgstr "Back"
 
 msgid "View detail"
 msgstr "View detail"
+
+msgid "Basic options"
+msgstr "Basic options"
+
+msgid "Items per page"
+msgstr "Items per page"

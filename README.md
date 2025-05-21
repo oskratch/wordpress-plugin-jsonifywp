@@ -74,6 +74,20 @@ When creating or editing an endpoint, you can configure:
 - **Detail page URL** (relative URL to the WordPress page with `[jsonifywp_detail]`)
 - **Detail API field** (the JSON field in the list that contains the detail API URL, e.g. `employee_profile`)
 
+### Configuration: Items per page
+
+The number of items per page can be configured from the JsonifyWP > Settings menu.
+
+To access this value from PHP:
+```php
+$items_per_page = get_option('jsonifywp_items_per_page', 5);
+```
+
+To access this value from JS (if the plugin loads the variable):
+```js
+const itemsPerPage = window.jsonifywp_vars?.itemsPerPage || 5;
+```
+
 ## License
 
 This plugin is licensed under the GPLv2 or later. See [LICENSE](LICENSE) for details.

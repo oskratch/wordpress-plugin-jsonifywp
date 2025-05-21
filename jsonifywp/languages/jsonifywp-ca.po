@@ -166,3 +166,9 @@ msgstr "Tornar"
 
 msgid "View detail"
 msgstr "Veure detall"
+
+msgid "Basic options"
+msgstr "Opcions bàsiques"
+
+msgid "Items per page"
+msgstr "Resultats per pàgina"
