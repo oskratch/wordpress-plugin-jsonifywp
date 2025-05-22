@@ -3,7 +3,6 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
-- Work in progress.
 
 ## [1.2.1] - 2025-05-20
 ### Added
