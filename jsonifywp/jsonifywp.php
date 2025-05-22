@@ -5,7 +5,7 @@
  * Description: Plugin to manage custom entries with its own table and shortcode, providing JSON integration.
  * Author: Oscar Periche, Metalinked
  * Author URI: https://metalinked.net/
- * Version: 0.0.0
+ * Version: 1.0.0
  * Requires at least: 6.3
  * Requires PHP: 8
  * License: GPL v2 or later
