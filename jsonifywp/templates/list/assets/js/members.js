@@ -4,6 +4,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const totalItems = rows.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+    function scrollToListTop() {
+        const firstRow = document.querySelector('.row-items');
+        if (firstRow) {
+            const rect = firstRow.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const offset = rect.top + scrollTop - 120; // 30px higher
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+    }
+
     function showPage(page) {
         rows.forEach((row, idx) => {
             if (idx >= (page - 1) * itemsPerPage && idx < page * itemsPerPage) {
@@ -40,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 a.addEventListener('click', (e) => {
                     e.preventDefault();
                     showPage(i);
+                    scrollToListTop();
                     // Update pagination UI
                     const pagItems = pagination.querySelectorAll('li');
                     pagItems.forEach((item, idx) => {
@@ -62,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 newA.addEventListener('click', (ev) => {
                                     ev.preventDefault();
                                     showPage(idx + 1);
+                                    scrollToListTop();
                                     createPagination();
                                 });
                                 item.replaceChild(newA, span);
