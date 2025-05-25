@@ -27,8 +27,7 @@ JsonifyWP now supports multiple languages. If your desired language file does no
 
 ### Display a List
 
-Add the following shortcode to any page or post to display data from a specific endpoint. The example below uses `1` as the endpoint ID—replace it with your actual endpoint's ID. You can find the correct shortcode for each endpoint in the endpoints table in the admin area, ready to copy and paste.
-
+Add the following shortcode to any page or post to display data from a specific endpoint. For example, if your listing page is called `members`, you can use the shortcode below (replace `1` with your actual endpoint's ID). You can find the correct shortcode for each endpoint in the endpoints table in the admin area, ready to copy and paste.
 
 ```
 [jsonifywp id="1"]
@@ -42,14 +41,14 @@ Or, as an alias (also supported):
 
 ### Display a Detail Page
 
-1. Create a WordPress page (e.g., `/detail/` or `/employees/`) and add this shortcode:
+1. Create a WordPress page (e.g., `/detail/`) and add this shortcode:
     ```
     [jsonifywp_detail]
     ```
-2. In the JsonifyWP admin, make sure to set the **Detail page URL** field for each API endpoint to match the slug of this detail page (e.g., `detail` or `employees`). This tells the plugin where to link for detail views.
+2. In the JsonifyWP admin, set the **Detail page URL** field for each API endpoint to match the slug of this detail page (e.g., `detail`). This tells the plugin where to link for detail views.
 3. JsonifyWP will automatically use the `jsonifywp_id` and `item` parameters from the URL, for example:
     ```
-    /employees/?jsonifywp_id=1&item=2
+    /detail/?jsonifywp_id=1&item=2
     ```
 
 ### How navigation works
@@ -71,7 +70,7 @@ When creating or editing an endpoint, you can configure:
 - **API URL** (main list)
 - **List template** (from `templates/list/`)
 - **Detail template** (from `templates/detail/`)
-- **Detail page URL** (relative URL to the WordPress page with `[jsonifywp_detail]`)
+- **Detail page URL** (relative URL to the WordPress page with `[jsonifywp_detail]`, e.g., `detail`)
 - **Detail API field** (the JSON field in the list that contains the detail API URL, e.g. `employee_profile`)
 
 ### Configuration: Items per page
