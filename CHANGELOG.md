@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.1](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.0...v1.1.1) (2025-05-27)
+
+
+### Bug Fixes
+
+* resolve persistent first item visibility, add top paginator, and sync active page highlight ([ba0c9de](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/ba0c9de56ce79daa66de91e9c853ea64577ff467))
+
 ## [1.1.0](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.0.0...v1.1.0) (2025-05-24)
 
 
