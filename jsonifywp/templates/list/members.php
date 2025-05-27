@@ -1,3 +1,10 @@
+<div class="row jsonifywp-pagination-row" id="jsonifywp-pagination-top" style="margin-bottom:60px;">
+    <div class="jws_team_item col-xl-12 col-lg-12 col-12">
+        <div class="jws-pagination-number">
+            <ul class="page-numbers"></ul>
+        </div>
+    </div>
+</div>
 <?php
 // $json contains the decoded JSON
 if (is_array($json)) {
@@ -55,7 +62,7 @@ if (is_array($json)) {
     }
 }
 ?>
-<div class="row" style="margin-top:30px;">
+<div class="row jsonifywp-pagination-row" style="margin-top:40px;">
     <div class="jws_team_item col-xl-12 col-lg-12 col-12">
         <div class="jws-pagination-number">
             <ul class="page-numbers"></ul>
