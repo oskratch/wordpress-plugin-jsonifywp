@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.2](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.1...v1.1.2) (2025-05-28)
+
+
+### Bug Fixes
+
+* **ci:** use default GITHUB_TOKEN in release-please workflow ([70e94cb](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/70e94cb47c13228d1075c7a95362b21cf2060c91))
+
 ## [1.1.1](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.0...v1.1.1) (2025-05-27)
 
 
