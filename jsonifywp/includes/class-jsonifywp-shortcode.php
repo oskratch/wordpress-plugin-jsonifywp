@@ -26,6 +26,15 @@ add_shortcode('jsonifywp', function($atts) {
     // Check if api_url starts with http, if not, prepend api_domain
     $api_url = jsonifywp_prepend_domain_if_needed($item->api_url, $item->api_domain);
 
+    // Check if detail_template is 'none' and append page parameter
+    if ($item->detail_template === 'none') {
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $api_url = add_query_arg('page', $page, $api_url);
+        
+        $limit = isset($item->limit) ? intval($item->limit) : 10;
+        $api_url = add_query_arg('limit', $limit, $api_url);
+    }
+
     // Main API call
     $response = wp_remote_get($api_url);
     if (is_wp_error($response)) return '<p>Error retrieving data from the API.</p>';

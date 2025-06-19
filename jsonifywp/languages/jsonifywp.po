@@ -159,3 +159,6 @@ msgstr "Basic options"
 
 msgid "Items per page"
 msgstr "Items per page"
+
+msgid "No detail page"
+msgstr "No detail page"

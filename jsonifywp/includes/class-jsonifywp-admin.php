@@ -91,9 +91,9 @@ class JsonifyWP_Admin {
             'api_domain' => '',
             'api_url' => '',
             'list_template' => 'default.php',
-            'detail_template' => 'default_detail.php',
+            'detail_template' => 'none',
             'detail_page_url' => '',
-            'detail_api_field' => 'employee_profile'
+            'detail_api_field' => ''
         ];
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $editing = true;
@@ -106,10 +106,24 @@ class JsonifyWP_Admin {
 
         // Read available templates
         $list_templates_dir = plugin_dir_path(__FILE__) . '../templates/list/';
-        $list_templates = is_dir($list_templates_dir) ? array_diff(scandir($list_templates_dir), ['.', '..']) : [];
+        $list_templates = is_dir($list_templates_dir)
+            ? array_filter(
+                scandir($list_templates_dir),
+                function($tpl) use ($list_templates_dir) {
+                    return is_file($list_templates_dir . $tpl) && pathinfo($tpl, PATHINFO_EXTENSION) === 'php';
+                }
+            )
+            : [];
 
         $detail_templates_dir = plugin_dir_path(__FILE__) . '../templates/detail/';
-        $detail_templates = is_dir($detail_templates_dir) ? array_diff(scandir($detail_templates_dir), ['.', '..']) : [];
+        $detail_templates = is_dir($detail_templates_dir)
+            ? array_filter(
+                scandir($detail_templates_dir),
+                function($tpl) use ($detail_templates_dir) {
+                    return is_file($detail_templates_dir . $tpl) && pathinfo($tpl, PATHINFO_EXTENSION) === 'php';
+                }
+            )
+            : [];
 
         // Process form
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['jsonifywp_nonce']) && wp_verify_nonce($_POST['jsonifywp_nonce'], 'jsonifywp_save')) {
@@ -180,7 +194,8 @@ class JsonifyWP_Admin {
                     <tr>
                         <th><label for="detail_template"><?php _e('Detail Template', 'jsonifywp'); ?></label></th>
                         <td>
-                            <select name="detail_template" id="detail_template" aria-describedby="detail_template-description" required>
+                            <select name="detail_template" id="detail_template">
+                                <option value="none" <?php selected($item->detail_template, 'none'); ?>><?php esc_html_e('No detail page', 'jsonifywp'); ?></option>
                                 <?php foreach ($detail_templates as $tpl): ?>
                                     <option value="<?php echo esc_attr($tpl); ?>" <?php selected($item->detail_template, $tpl); ?>>
                                         <?php echo esc_html($tpl); ?>
@@ -192,19 +207,19 @@ class JsonifyWP_Admin {
                             </p>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="jsonifywp-detail-field">
                         <th><label for="detail_page_url"><?php _e('Detail Page URL', 'jsonifywp'); ?></label></th>
                         <td>
-                            <input type="text" name="detail_page_url" id="detail_page_url" value="<?php echo esc_attr($item->detail_page_url); ?>" aria-describedby="detail_page_url-description" class="regular-text" required>
+                            <input type="text" name="detail_page_url" id="detail_page_url" class="regular-text" value="<?php echo esc_attr($item->detail_page_url); ?>">
                             <p class="description" id="detail_page_url-description">
                                 <?php _e('Relative URL of the detail page (e.g.: /detail/).', 'jsonifywp'); ?> <?php _e('On the corresponding detail page you must add this shortcode for it to work:', 'jsonifywp'); ?> <code>[jsonifywp_detail]</code>
                             </p>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="jsonifywp-detail-field">
                         <th><label for="detail_api_field"><?php _e('Detail API Field', 'jsonifywp'); ?></label></th>
-                        <td>
-                            <input type="text" name="detail_api_field" id="detail_api_field" value="<?php echo esc_attr($item->detail_api_field); ?>" aria-describedby="detail_api_field-description" class="regular-text" required>
+                        <td>                            
+                            <input type="text" name="detail_api_field" id="detail_api_field" value="<?php echo esc_attr($item->detail_api_field); ?>">
                             <p class="description" id="detail_api_field-description">
                                 <?php _e("Name of the JSON field in the list that contains the detail API URL (e.g.: employee_profile)", 'jsonifywp'); ?>							
                             </p>
@@ -214,6 +229,27 @@ class JsonifyWP_Admin {
                 <?php submit_button($editing ? __('Update', 'jsonifywp') : __('Add', 'jsonifywp')); ?>
             </form>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                function toggleDetailFields() {
+                    var detailTemplate = document.getElementById('detail_template');
+                    var detailFields = document.querySelectorAll('.jsonifywp-detail-field');
+                    var required = detailTemplate.value !== 'none';
+                    detailFields.forEach(function(field) {
+                        field.style.display = required ? '' : 'none';
+                        var input = field.querySelector('input');
+                        if (input) {
+                            input.required = required;
+                        }
+                    });
+                }
+                var detailTemplate = document.getElementById('detail_template');
+                if (detailTemplate) {
+                    detailTemplate.addEventListener('change', toggleDetailFields);
+                    toggleDetailFields();
+                }
+            });
+        </script>
         <?php
     }
 }
