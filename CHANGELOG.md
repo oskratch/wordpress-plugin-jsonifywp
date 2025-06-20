@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.2...v1.1.3) (2025-06-20)
+
+
+### Bug Fixes
+
+* correct limit parameter and paginator behavior in publications list ([2132b0f](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/2132b0f8b7d16343787586485aef9473a5569d79))
+
 ## [1.1.2](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.1...v1.1.2) (2025-05-28)
 
 
