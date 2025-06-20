@@ -23,9 +23,8 @@
         if ($pages > 1) {
             echo '<div class="jsonifywp-pagination">';
             for ($i = 1; $i <= $pages; $i++) {
-                // Build pagination URLs
-                $base_url = remove_query_arg('page', $_SERVER['REQUEST_URI']);
-                $url = add_query_arg('page', $i, $base_url);
+                $base_url = remove_query_arg(['jsonifywp_page', 'limit'], $_SERVER['REQUEST_URI']);
+                $url = add_query_arg(['jsonifywp_page' => $i, 'limit' => $limit], $base_url);
                 if ($i == $page) {
                     echo '<span class="page-numbers current" aria-current="page">' . $i . '</span> ';
                 } else {

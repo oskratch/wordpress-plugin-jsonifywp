@@ -28,10 +28,10 @@ add_shortcode('jsonifywp', function($atts) {
 
     // Check if detail_template is 'none' and append page parameter
     if ($item->detail_template === 'none') {
-        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $page = isset($_GET['jsonifywp_page']) ? intval($_GET['jsonifywp_page']) : 1;
         $api_url = add_query_arg('page', $page, $api_url);
         
-        $limit = isset($item->limit) ? intval($item->limit) : 10;
+        $limit = get_option('jsonifywp_items_per_page', 5);
         $api_url = add_query_arg('limit', $limit, $api_url);
     }
 
