@@ -162,3 +162,9 @@ msgstr "Items per page"
 
 msgid "No detail page"
 msgstr "No detail page"
+
+msgid "Duplicate"
+msgstr "Duplicate"
+
+msgid "Are you sure you want to duplicate?"
+msgstr "Are you sure you want to duplicate?"

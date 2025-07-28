@@ -175,3 +175,9 @@ msgstr "Resultats per pàgina"
 
 msgid "No detail page"
 msgstr "No té pàgina de detall"
+
+msgid "Duplicate"
+msgstr "Duplicar"
+
+msgid "Are you sure you want to duplicate?"
+msgstr "Estàs segur que vols duplicar?"

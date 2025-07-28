@@ -32,6 +32,25 @@ class JsonifyWP_Admin {
             JsonifyWP_DB::delete(intval($_GET['delete']));
             echo '<div class="notice notice-success"><p>' . __('Record deleted.', 'jsonifywp') . '</p></div>';
         }
+        // DUPLICATE logic
+        if (isset($_GET['duplicate']) && is_numeric($_GET['duplicate'])) {
+            check_admin_referer('jsonifywp_duplicate_' . $_GET['duplicate']);
+            $orig = JsonifyWP_DB::get(intval($_GET['duplicate']));
+            if ($orig) {
+                $new_title = $orig->title . ' (copy)';
+                JsonifyWP_DB::insert(
+                    $new_title,
+                    $orig->language,
+                    $orig->api_domain,
+                    $orig->api_url,
+                    $orig->list_template,
+                    $orig->detail_template,
+                    $orig->detail_page_url,
+                    $orig->detail_api_field
+                );
+                echo '<div class="notice notice-success"><p>' . __('Record duplicated.', 'jsonifywp') . '</p></div>';
+            }
+        }
         $items = JsonifyWP_DB::get_all();
         ?>
         <div class="wrap">
@@ -71,6 +90,7 @@ class JsonifyWP_Admin {
                         <td><code>[jsonifywp-<?php echo $item->id; ?>]</code></td>
                         <td>
                             <a href="<?php echo admin_url('admin.php?page=jsonifywp-add&id=' . $item->id); ?>"><?php _e('Edit', 'jsonifywp'); ?></a> | 
+                            <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=jsonifywp&duplicate=' . $item->id), 'jsonifywp_duplicate_' . $item->id); ?>" onclick="return confirm('<?php _e('Are you sure you want to duplicate?', 'jsonifywp'); ?>');"><?php _e('Duplicate', 'jsonifywp'); ?></a> |
                             <a href="<?php echo wp_nonce_url(admin_url('admin.php?page=jsonifywp&delete=' . $item->id), 'jsonifywp_delete_' . $item->id); ?>" onclick="return confirm('<?php _e('Are you sure you want to delete?', 'jsonifywp'); ?>');"><?php _e('Delete', 'jsonifywp'); ?></a>
                         </td>
                     </tr>
