@@ -129,4 +129,14 @@ This plugin is licensed under the GPLv2 or later. See [LICENSE](LICENSE) for det
 
 ---
 
-**Developed
+## Duplicating Endpoints
+
+You can quickly duplicate any endpoint from the admin endpoints list. Click the "Duplicate" action next to an endpoint to create a new one with the same configuration (the new endpoint will have the same data, with "(copy)" added to the title). This makes it easy to create similar endpoints without re-entering all the details.
+
+## License
+
+This plugin is licensed under the GPLv2 or later. See [LICENSE](LICENSE) for details.
+
+---
+
+**Developed by Oscar Periche. Contributions welcome!**
