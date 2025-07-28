@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.4...v1.2.0) (2025-07-28)
+
+
+### Features
+
+* **admin:** add duplicate record option to endpoints list ([6c32cfb](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/6c32cfbd7b5044db04f784a9e92ef4890e8eb4ae))
+
 ## [1.1.4](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/v1.1.3...v1.1.4) (2025-06-25)
 
 
