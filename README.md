@@ -1,6 +1,6 @@
 # JsonifyWP
 
-<img alt="WordPress" src="https://img.shields.io/badge/WordPress-5.0+-blue.svg"> <img alt="PHP" src="https://img.shields.io/badge/PHP-7.4+-purple.svg"> <img alt="MySQL" src="https://img.shields.io/badge/MySQL-5.6+-orange.svg"> <img alt="License" src="https://img.shields.io/badge/License-GPL v2-green.svg">
+![WordPress](https://img.shields.io/badge/WordPress-5.0%2B-blue.svg) ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple.svg) ![MySQL](https://img.shields.io/badge/MySQL-5.6%2B-orange.svg) ![License](https://img.shields.io/badge/License-GPL%20v2-green.svg)
 
 JsonifyWP is a WordPress plugin that lets you manage custom API endpoints—each with its own title, language, API URL (endpoint), templates, and detail page settings—stored in a dedicated database table. You can display data from remote JSON APIs on your site using flexible templates.
 
