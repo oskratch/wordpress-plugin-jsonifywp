@@ -1,21 +1,21 @@
 # JsonifyWP
+
+<img alt="WordPress" src="https://img.shields.io/badge/WordPress-5.0+-blue.svg"> <img alt="PHP" src="https://img.shields.io/badge/PHP-7.4+-purple.svg"> <img alt="MySQL" src="https://img.shields.io/badge/MySQL-5.6+-orange.svg"> <img alt="License" src="https://img.shields.io/badge/License-GPL v2-green.svg">
+
 JsonifyWP is a WordPress plugin that lets you manage custom API endpoints—each with its own title, language, API URL (endpoint), templates, and detail page settings—stored in a dedicated database table. You can display data from remote JSON APIs on your site using flexible templates.
 
 ## Features
 
-- Admin interface to manage endpoints (add/edit title, language, API URL [endpoint], list template, detail template, detail page URL, detail API field)
-- Stores endpoints in a dedicated table (`wp_jsonifywp`)
-- Supports multiple templates for list and detail views (selectable per endpoint)
-- Shortcode to display API data using the selected template
-- Easily extensible with your own templates (separate folders for list and detail)
-- Each list entry can link to its detail page
-- Fully configurable: you can set which JSON field contains the detail API URL for each endpoint
-- Shortcodes automatically read parameters from the URL for seamless navigation
-- Option to configure endpoints as "list-only" (no detail page), enabling API-driven pagination
-
-## Multilingual Support
-
-JsonifyWP now supports multiple languages. If your desired language file does not exist, you can create it in the `languages` folder.
+- **Admin interface** to manage endpoints with full configuration options
+- **Custom database table** (`wp_jsonifywp`) to store all endpoint configurations
+- **Multiple templates** for list and detail views (selectable per endpoint)
+- **Flexible shortcodes** to display API data using the selected template
+- **Template system** easily extensible with your own PHP templates
+- **Navigation support** between list and detail pages
+- **Smart URL handling** - shortcodes automatically read parameters from the URL
+- **Two operation modes**: full list-to-detail navigation or list-only with API pagination
+- **Endpoint duplication** for quick setup of similar configurations
+- **Multilingual support** with translation files in the `languages` folder
 
 ## Installation
 
@@ -24,61 +24,43 @@ JsonifyWP now supports multiple languages. If your desired language file does no
 3. Activate the plugin from the WordPress admin panel.
 4. Go to the JsonifyWP menu in the admin sidebar to add and manage endpoints.
 
-## Usage
+## Configuration
 
-### Display a List
-
-Add the following shortcode to any page or post to display data from a specific endpoint. For example, if your listing page is called `members`, you can use the shortcode below (replace `1` with your actual endpoint's ID). You can find the correct shortcode for each endpoint in the endpoints table in the admin area, ready to copy and paste.
-
-```
-[jsonifywp id="1"]
-```
-
-Or, as an alias (also supported):
-
-```
-[jsonifywp-1]
-```
-
-### Display a Detail Page
-
-1. Create a WordPress page (e.g., `/detail/`) and add this shortcode:
-    ```
-    [jsonifywp_detail]
-    ```
-2. In the JsonifyWP admin, set the **Detail page URL** field for each API endpoint to match the slug of this detail page (e.g., `detail`). This tells the plugin where to link for detail views.
-3. JsonifyWP will automatically use the `jsonifywp_id` and `item` parameters from the URL, for example:
-    ```
-    /detail/?jsonifywp_id=1&item=2
-    ```
-
-### How navigation works
-
-- In your list template, use the `$item_obj->detail_page_url` property to generate the correct link to the detail page for each entry, passing the required parameters.
-- The plugin will fetch the main API, extract the detail API URL from the configured field (e.g., `employee_profile`), and fetch the detail JSON for display.
-
-## Creating Templates
-
-- Place your list templates in `templates/list/` and your detail templates in `templates/detail/` inside the plugin directory.
-- You can create as many templates as you want for both list and detail views, and select them per endpoint in the admin interface.
-
-## Configuration fields per endpoint
+### Endpoint Fields
 
 When creating or editing an endpoint, you can configure:
-- **Title**
-- **Language** (for display purposes only; currently, language selection does not affect API requests. The API URL itself should include any language parameters required by your API, if supported.)
-- **API domain** (optional base domain to prepend to detail URLs if the URLs returned in the list are relative or missing the domain)
-- **API URL** (main list; do not include `page` or `limit` parameters, as these are handled automatically by the plugin)
-- **List template** (from `templates/list/`)
-- **Detail template** (from `templates/detail/`, or select **No detail page** if you only want a paginated list)
-- **Detail page URL** (only required if a detail template is selected; hidden and not required if "No detail page" is chosen)
-- **Detail API field** (only required if a detail template is selected; hidden and not required if "No detail page" is chosen)
 
-### List-only Endpoints and API Pagination
+- **Title**: Display name for the endpoint
+- **Language**: For display purposes (language parameters should be included in the API URL if required)
+- **API domain**: Optional base domain to prepend to detail URLs if they are relative
+- **API URL**: Main list endpoint (do not include `page` or `limit` parameters, as these are handled automatically)
+- **List template**: Choose from available templates in `templates/list/`
+- **Detail template**: Choose from `templates/detail/` templates, or select **No detail page** for list-only mode
+- **Detail page URL**: Required only for detail mode - relative URL to the WordPress page containing `[jsonifywp_detail]`
+- **Detail API field**: Required only for detail mode - JSON field name containing the detail API URL
 
-If you select **No detail page** as the detail template when creating or editing an endpoint, the fields **Detail page URL** and **Detail API field** will be hidden and are not required. In this mode, the endpoint will only display a paginated list, and the plugin will automatically add `page` and `limit` parameters to the API request for pagination.
+### Operation Modes
 
-The API should return a JSON response like:
+**Detail Mode (default):**
+- Each list item can link to a detail page showing expanded information
+- Requires a second API call to fetch detailed data
+- Suitable for member directories, product catalogs, etc.
+
+**List-only Mode:**
+- Select "No detail page" as the detail template
+- Displays only a paginated list with automatic API-driven pagination
+- The plugin automatically adds `page` and `limit` parameters to API requests
+- Ideal for publications, news feeds, or simple data lists
+
+### Global Settings
+
+Configure global options from JsonifyWP > Settings:
+
+- **Items per page**: Number of items to display per page for list-only endpoints
+
+### List-only API Response Format
+
+For list-only endpoints, your API should return JSON in this format:
 
 ```json
 {
@@ -89,49 +71,80 @@ The API should return a JSON response like:
     "Information A...",
     "Information B...",
     "Information C...",
-    "Information D...",
-    "Information E...",
-    "Information F...",
-    "Information G...",
-    "Information H...",
-    "Information I...",
-    "Information J..."
+    "..."
   ]
 }
 ```
 
-- **total**: total number of available items.
-- **page**: current page number.
-- **limit**: number of items per page (taken from the plugin’s global setting).
-- **items**: array of items to display for the current page.
+- **total**: Total number of available items
+- **page**: Current page number
+- **limit**: Number of items per page
+- **items**: Array of items for the current page
 
-The plugin will automatically display pagination controls and handle navigation, passing the correct parameters to the API.
+## Usage
 
-> This feature is ideal for simple lists, such as publications or news, where no detail page is required for each item.
+### Shortcodes
 
-### Configuration: Items per page
+**Display a List:**
+```
+[jsonifywp id="1"]
+```
+Or use the alias format:
+```
+[jsonifywp-1]
+```
 
-The number of items per page can be configured from the JsonifyWP > Settings menu.
+**Display a Detail Page:**
+```
+[jsonifywp_detail]
+```
 
-To access this value from PHP:
+You can find the correct shortcode for each endpoint in the admin endpoints table, ready to copy and paste.
+
+### Setting up Detail Pages
+
+1. Create a WordPress page (e.g., `/detail/`) and add the `[jsonifywp_detail]` shortcode
+2. In JsonifyWP admin, set the **Detail page URL** field to match your page slug (e.g., `detail`)
+3. The plugin automatically handles URL parameters like `/detail/?jsonifywp_id=1&item=2`
+
+### Navigation Flow
+
+- List templates use `$item_obj->detail_page_url` to generate correct detail page links
+- The plugin fetches the main API, extracts the detail URL from the configured JSON field
+- Makes a second API call to fetch and display detailed information
+
+## Templates
+
+### Creating Custom Templates
+
+- **List templates**: Place in `templates/list/` directory
+- **Detail templates**: Place in `templates/detail/` directory
+- Templates are standard PHP files with access to API data variables
+- Select templates per endpoint in the admin interface
+
+### Available Variables in Templates
+
+- `$json`: Decoded API response data
+- `$item_obj`: Full endpoint configuration object
+- `$type_id`: Current endpoint ID
+
+## Advanced Features
+
+### Duplicating Endpoints
+
+Quickly duplicate any endpoint from the admin endpoints list. Click the "Duplicate" action to create a new endpoint with the same configuration (title will have "(copy)" appended). This makes it easy to create similar endpoints without re-entering all details.
+
+### Accessing Configuration in Code
+
+**Get items per page setting:**
 ```php
 $items_per_page = get_option('jsonifywp_items_per_page', 5);
 ```
 
-To access this value from JS (if the plugin loads the variable):
+**Access from JavaScript (if loaded):**
 ```js
 const itemsPerPage = window.jsonifywp_vars?.itemsPerPage || 5;
 ```
-
-## License
-
-This plugin is licensed under the GPLv2 or later. See [LICENSE](LICENSE) for details.
-
----
-
-## Duplicating Endpoints
-
-You can quickly duplicate any endpoint from the admin endpoints list. Click the "Duplicate" action next to an endpoint to create a new one with the same configuration (the new endpoint will have the same data, with "(copy)" added to the title). This makes it easy to create similar endpoints without re-entering all the details.
 
 ## License
 
