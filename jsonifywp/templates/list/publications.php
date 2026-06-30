@@ -42,9 +42,9 @@ if (is_array($json) && isset($json['total'], $json['limit'], $json['page'])) {
     if ($pages > 1) {
         wp_enqueue_script(
             'jsonifywp-publications-js',
-            plugins_url('assets/js/publications.js', __FILE__),
+            plugin_dir_url(__FILE__) . 'assets/js/publications.js',
             array(),
-            '1.0',
+            JSONIFYWP_VERSION,
             true
         );
         wp_localize_script('jsonifywp-publications-js', 'jsonifywp_publications_vars', [

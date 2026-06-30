@@ -9,17 +9,15 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Release Please Action
-        uses: google-github-actions/release-please-action@v3
+      - uses: google-github-actions/release-please-action@v4
         with:
-          release-type: php
-          package-name: jsonifywp
           token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: release-please-manifest.json

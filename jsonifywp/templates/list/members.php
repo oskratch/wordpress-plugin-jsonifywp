@@ -46,7 +46,9 @@ if (is_array($json)) {
                                 <?php echo esc_html($labels['extension']) . ': ' . esc_html($item['extension']); ?>
                             </div>
                         <?php endif; ?>    
-                        <?php if (isset($item['employee_profile'])): ?>
+                        <?php
+            $detail_field = jsonifywp_get_detail_field($item_obj);
+            if ($item_obj->detail_template !== 'none' && isset($item[$detail_field])): ?>
                             <div style="margin-top:5px;">
                                 <a class="elementor-button btn btn-naked btn-icon-shaped btn-has-label" href="<?php echo esc_url(add_query_arg(['jsonifywp_id' => $type_id, 'item' => $index], $item_obj->detail_page_url)); ?>">
                                     <span data-text="View all events" class="btn-txt"><?php _e('More info', 'jsonifywp'); ?></span>
@@ -72,9 +74,9 @@ if (is_array($json)) {
 <?php
 wp_enqueue_script(
     'jsonifywp-members-js',
-    plugins_url('assets/js/members.js', __FILE__),
+    plugin_dir_url(__FILE__) . 'assets/js/members.js',
     array(),
-    '1.0',
+    JSONIFYWP_VERSION,
     true
 );
 wp_localize_script('jsonifywp-members-js', 'jsonifywp_members_vars', [

@@ -2,7 +2,6 @@
 
 if (!defined('ABSPATH')) exit;
 
-// Add settings submenu
 add_action('admin_menu', function() {
     add_submenu_page(
         'jsonifywp',
@@ -14,7 +13,6 @@ add_action('admin_menu', function() {
     );
 });
 
-// Settings form
 function jsonifywp_settings_page() {
     ?>
     <div class="wrap">
@@ -30,12 +28,17 @@ function jsonifywp_settings_page() {
     <?php
 }
 
-// Register option and field
 add_action('admin_init', function() {
     register_setting('jsonifywp_settings_group', 'jsonifywp_items_per_page', [
-        'type' => 'integer',
+        'type'              => 'integer',
         'sanitize_callback' => 'absint',
-        'default' => 5,
+        'default'           => 5,
+    ]);
+
+    register_setting('jsonifywp_settings_group', 'jsonifywp_cache_ttl', [
+        'type'              => 'integer',
+        'sanitize_callback' => 'absint',
+        'default'           => 0,
     ]);
 
     add_settings_section(
@@ -51,6 +54,19 @@ add_action('admin_init', function() {
         function() {
             $value = get_option('jsonifywp_items_per_page', 5);
             echo '<input type="number" min="1" name="jsonifywp_items_per_page" value="' . esc_attr($value) . '" />';
+            echo '<p class="description">' . esc_html__('Number of items per page for list-only endpoints.', 'jsonifywp') . '</p>';
+        },
+        'jsonifywp-settings',
+        'jsonifywp_main_section'
+    );
+
+    add_settings_field(
+        'jsonifywp_cache_ttl',
+        __('API cache duration (minutes)', 'jsonifywp'),
+        function() {
+            $value = get_option('jsonifywp_cache_ttl', 0);
+            echo '<input type="number" min="0" name="jsonifywp_cache_ttl" value="' . esc_attr($value) . '" />';
+            echo '<p class="description">' . esc_html__('Cache API responses for this many minutes. Set to 0 to disable caching.', 'jsonifywp') . '</p>';
         },
         'jsonifywp-settings',
         'jsonifywp_main_section'
