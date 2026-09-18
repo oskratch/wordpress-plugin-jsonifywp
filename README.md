@@ -24,6 +24,14 @@ JsonifyWP is a WordPress plugin that lets you manage custom API endpoints—each
 
 The `templates/list/` and `templates/detail/` directories already contain default templates. Custom templates you add there will be automatically available in the endpoint editor.
 
+## Security
+
+Endpoints are created by users with the `manage_options` capability (site admins), and the plugin fetches whatever **API URL** and **API Domain** they configure — server-side, on every page view that uses the shortcode. This is by design (that's the whole point of the plugin), but it means:
+
+- Only grant admin access to people you trust to configure endpoints responsibly.
+- Don't let endpoint URLs be influenced by untrusted input (e.g. don't build them from front-end user input).
+- Template files (`templates/list/*.php`, `templates/detail/*.php`) run as PHP with full site privileges — only install templates from a source you trust.
+
 ## Configuration
 
 ### Endpoint fields
@@ -38,6 +46,9 @@ The `templates/list/` and `templates/detail/` directories already contain defaul
 | **Detail Template** | Template file from `templates/detail/`, or **No detail page** for list-only mode |
 | **Detail Page URL** | Relative URL of the WordPress page containing `[jsonifywp_detail]` (detail mode only) |
 | **Detail API Field** | Name of the JSON field in each list item that holds the detail API URL (detail mode only) |
+| **Field labels** | Optional list of JSON field → display label overrides, used by the generic templates (see [Field labels](#field-labels)) |
+
+Use the **Test connection** button next to the API URL field to call the endpoint and preview its response (fields and a formatted excerpt of the first item) before saving — useful to confirm the URL and JSON shape are correct.
 
 ### Operation modes
 
@@ -122,6 +133,12 @@ $item_obj->detail_template
 $item_obj->detail_page_url
 $item_obj->detail_api_field
 ```
+
+### Field labels
+
+`templates/list/default.php` and `templates/detail/default_detail.php` — the generic fallback templates — render every JSON field as `key: value`. Instead of editing the template to rename fields, you can define **Field labels** in the endpoint editor (JSON field → display label); the generic templates use it automatically and fall back to the raw key when a field has no mapping.
+
+This only applies to the generic templates. Custom templates (`members.php`, `publications.php`, `employee_detail.php`, or any template you write) already hardcode field names and labels to match a specific theme's markup, and read `$json` directly — that's expected, since matching a theme's exact HTML/CSS requires real template code. If you want a custom template to honor Field labels too, read them yourself with `jsonifywp_get_field_labels($item_obj)` (returns a `[json_field => label]` array).
 
 ### Generating detail page links
 
