@@ -20,6 +20,17 @@ function jsonifywp_get_detail_field($item_obj) {
 }
 
 /**
+ * Decodes the endpoint's field_labels JSON into a [json_field => label] array.
+ * Used by the generic templates so field names can be relabelled from the
+ * admin instead of being hardcoded in a template file.
+ */
+function jsonifywp_get_field_labels($item_obj) {
+    if (empty($item_obj->field_labels)) return [];
+    $labels = json_decode($item_obj->field_labels, true);
+    return is_array($labels) ? $labels : [];
+}
+
+/**
  * Fetch and decode a JSON API endpoint, with optional transient caching.
  * Returns an array on success or WP_Error on failure.
  */
@@ -127,7 +138,8 @@ add_shortcode('jsonifywp_detail', function($atts) {
         return '<p>' . esc_html__('Detail template not found.', 'jsonifywp') . '</p>';
     }
 
-    $type_id = $type->id;
+    $type_id  = $type->id;
+    $item_obj = $type;
 
     ob_start();
     include $template_file;

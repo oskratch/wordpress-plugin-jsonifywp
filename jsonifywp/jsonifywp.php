@@ -27,6 +27,7 @@ require_once JSONIFYWP_DIR . 'includes/jsonifywp-options.php';
 
 add_action('plugins_loaded', function() {
     load_plugin_textdomain('jsonifywp', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    JsonifyWP_DB::maybe_upgrade();
 });
 
 register_activation_hook(__FILE__, ['JsonifyWP_DB', 'install']);
