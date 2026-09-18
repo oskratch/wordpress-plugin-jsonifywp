@@ -6,6 +6,61 @@ class JsonifyWP_Admin {
     public function __construct() {
         add_action('admin_menu', [$this, 'menu']);
         add_action('admin_init', [$this, 'handle_actions']);
+        add_action('wp_ajax_jsonifywp_test_connection', [$this, 'ajax_test_connection']);
+    }
+
+    /**
+     * Returns the list of allowed template filenames for a given templates
+     * subfolder ('list' or 'detail'), so submitted values can be validated
+     * against what actually exists on disk instead of trusting the POST body.
+     */
+    private static function allowed_templates($type) {
+        $dir = JSONIFYWP_DIR . 'templates/' . $type . '/';
+        if (!is_dir($dir)) return [];
+        return array_values(array_filter(
+            scandir($dir),
+            function ($tpl) use ($dir) {
+                return is_file($dir . $tpl) && pathinfo($tpl, PATHINFO_EXTENSION) === 'php';
+            }
+        ));
+    }
+
+    /**
+     * AJAX: fetches an API URL from the add/edit form (before it's saved)
+     * and returns a short preview so the user can verify it before saving.
+     */
+    public function ajax_test_connection() {
+        check_ajax_referer('jsonifywp_test_connection', 'nonce');
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('Not allowed.', 'jsonifywp')], 403);
+        }
+
+        $url = isset($_POST['url']) ? esc_url_raw(wp_unslash($_POST['url'])) : '';
+        if (empty($url)) {
+            wp_send_json_error(['message' => __('No URL provided.', 'jsonifywp')]);
+        }
+
+        $response = wp_remote_get($url, ['timeout' => 10]);
+        if (is_wp_error($response)) {
+            wp_send_json_error(['message' => $response->get_error_message()]);
+        }
+
+        $code = wp_remote_retrieve_response_code($response);
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+
+        if ($code !== 200) {
+            wp_send_json_error(['message' => sprintf(__('API returned status %d.', 'jsonifywp'), $code)]);
+        }
+        if (!is_array($data)) {
+            wp_send_json_error(['message' => __('Response is not valid JSON.', 'jsonifywp')]);
+        }
+
+        $first_item = isset($data[0]) ? $data[0] : (isset($data['items'][0]) ? $data['items'][0] : $data);
+        wp_send_json_success([
+            'fields'  => is_array($first_item) ? array_keys($first_item) : [],
+            'preview' => wp_json_encode($first_item, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
+        ]);
     }
 
     public function menu() {
@@ -47,11 +102,32 @@ class JsonifyWP_Admin {
             $detail_page_url = sanitize_text_field($_POST['detail_page_url'] ?? '');
             $detail_api_field = sanitize_text_field($_POST['detail_api_field'] ?? '');
 
+            // Only accept template filenames that actually exist on disk.
+            if (!in_array($list_template, self::allowed_templates('list'), true)) {
+                wp_die(__('Invalid list template.', 'jsonifywp'));
+            }
+            if ($detail_template !== 'none' && !in_array($detail_template, self::allowed_templates('detail'), true)) {
+                wp_die(__('Invalid detail template.', 'jsonifywp'));
+            }
+
+            // Field-mapping rows: json_field => label, used by the generic templates.
+            $field_keys    = isset($_POST['field_key']) ? (array) wp_unslash($_POST['field_key']) : [];
+            $field_labels_ = isset($_POST['field_label']) ? (array) wp_unslash($_POST['field_label']) : [];
+            $field_labels  = [];
+            foreach ($field_keys as $i => $key) {
+                $key = sanitize_key($key);
+                if ($key === '' || !isset($field_labels_[$i])) continue;
+                $label = sanitize_text_field($field_labels_[$i]);
+                if ($label === '') continue;
+                $field_labels[$key] = $label;
+            }
+            $field_labels_json = !empty($field_labels) ? wp_json_encode($field_labels) : '';
+
             if ($editing) {
-                JsonifyWP_DB::update(intval($_GET['id']), $title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
+                JsonifyWP_DB::update(intval($_GET['id']), $title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field, $field_labels_json);
                 $status = 'updated';
             } else {
-                JsonifyWP_DB::insert($title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field);
+                JsonifyWP_DB::insert($title, $language, $api_domain, $api_url, $list_template, $detail_template, $detail_page_url, $detail_api_field, $field_labels_json);
                 $status = 'created';
             }
 
@@ -80,7 +156,8 @@ class JsonifyWP_Admin {
                     $orig->list_template,
                     $orig->detail_template,
                     $orig->detail_page_url,
-                    $orig->detail_api_field
+                    $orig->detail_api_field,
+                    $orig->field_labels
                 );
             }
             wp_redirect(add_query_arg('saved', 'duplicated', admin_url('admin.php?page=jsonifywp')));
@@ -179,6 +256,7 @@ class JsonifyWP_Admin {
             'detail_template'  => 'none',
             'detail_page_url'  => '',
             'detail_api_field' => '',
+            'field_labels'     => '',
         ];
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
@@ -209,6 +287,8 @@ class JsonifyWP_Admin {
                 }
             )
             : [];
+
+        $field_labels = jsonifywp_get_field_labels($item);
         ?>
         <div class="wrap">
             <h1><?php echo $editing ? esc_html__('Edit Entry', 'jsonifywp') : esc_html__('Add Entry', 'jsonifywp'); ?></h1>
@@ -235,7 +315,12 @@ class JsonifyWP_Admin {
                     </tr>
                     <tr>
                         <th><label for="api_url"><?php _e('API URL', 'jsonifywp'); ?></label></th>
-                        <td><input type="url" name="api_url" id="api_url" value="<?php echo esc_attr($item->api_url); ?>" class="regular-text" required></td>
+                        <td>
+                            <input type="url" name="api_url" id="api_url" value="<?php echo esc_attr($item->api_url); ?>" class="regular-text" required>
+                            <button type="button" class="button" id="jsonifywp-test-connection"><?php _e('Test connection', 'jsonifywp'); ?></button>
+                            <p class="description"><?php _e('Calls the URL as entered above (without domain prefixing) and previews the first item.', 'jsonifywp'); ?></p>
+                            <div id="jsonifywp-test-result"></div>
+                        </td>
                     </tr>
                     <tr>
                         <th><label for="list_template"><?php _e('List Template', 'jsonifywp'); ?></label></th>
@@ -283,6 +368,29 @@ class JsonifyWP_Admin {
                         </td>
                     </tr>
                 </table>
+
+                <h2><?php _e('Field labels', 'jsonifywp'); ?></h2>
+                <p class="description"><?php _e('Optional. Renames JSON fields when displayed by the generic templates (default.php / default_detail.php). Custom templates ignore this and keep their own hardcoded labels.', 'jsonifywp'); ?></p>
+                <table class="widefat striped" id="jsonifywp-field-labels-table" style="max-width:600px;">
+                    <thead>
+                        <tr>
+                            <th><?php _e('JSON field', 'jsonifywp'); ?></th>
+                            <th><?php _e('Label', 'jsonifywp'); ?></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($field_labels as $key => $label): ?>
+                            <tr>
+                                <td><input type="text" name="field_key[]" value="<?php echo esc_attr($key); ?>" class="regular-text"></td>
+                                <td><input type="text" name="field_label[]" value="<?php echo esc_attr($label); ?>" class="regular-text"></td>
+                                <td><button type="button" class="button jsonifywp-remove-row" aria-label="<?php esc_attr_e('Remove', 'jsonifywp'); ?>">&times;</button></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <p><button type="button" class="button" id="jsonifywp-add-field-row"><?php _e('+ Add field', 'jsonifywp'); ?></button></p>
+
                 <?php submit_button($editing ? __('Update', 'jsonifywp') : __('Add', 'jsonifywp')); ?>
             </form>
         </div>
@@ -302,6 +410,96 @@ class JsonifyWP_Admin {
                 if (detailTemplate) {
                     detailTemplate.addEventListener('change', toggleDetailFields);
                     toggleDetailFields();
+                }
+
+                // Field-labels table: add/remove rows.
+                var fieldTable = document.querySelector('#jsonifywp-field-labels-table tbody');
+                var addRowBtn  = document.getElementById('jsonifywp-add-field-row');
+
+                function addFieldRow(key, label) {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML =
+                        '<td><input type="text" name="field_key[]" class="regular-text"></td>' +
+                        '<td><input type="text" name="field_label[]" class="regular-text"></td>' +
+                        '<td><button type="button" class="button jsonifywp-remove-row" aria-label="<?php echo esc_js(__('Remove', 'jsonifywp')); ?>">&times;</button></td>';
+                    tr.querySelectorAll('input')[0].value = key || '';
+                    tr.querySelectorAll('input')[1].value = label || '';
+                    fieldTable.appendChild(tr);
+                }
+
+                if (addRowBtn) {
+                    addRowBtn.addEventListener('click', function() { addFieldRow('', ''); });
+                }
+                if (fieldTable) {
+                    fieldTable.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('jsonifywp-remove-row')) {
+                            e.target.closest('tr').remove();
+                        }
+                    });
+                }
+
+                // Test connection button.
+                var testBtn    = document.getElementById('jsonifywp-test-connection');
+                var testResult = document.getElementById('jsonifywp-test-result');
+                if (testBtn) {
+                    testBtn.addEventListener('click', function() {
+                        var url = document.getElementById('api_url').value;
+                        if (!url) {
+                            testResult.textContent = '<?php echo esc_js(__('Enter an API URL first.', 'jsonifywp')); ?>';
+                            return;
+                        }
+                        testBtn.disabled = true;
+                        testResult.textContent = '<?php echo esc_js(__('Testing…', 'jsonifywp')); ?>';
+
+                        var body = new URLSearchParams({
+                            action: 'jsonifywp_test_connection',
+                            nonce: '<?php echo esc_js(wp_create_nonce('jsonifywp_test_connection')); ?>',
+                            url: url
+                        });
+
+                        fetch(ajaxurl, { method: 'POST', body: body })
+                            .then(function(r) { return r.json(); })
+                            .then(function(res) {
+                                testBtn.disabled = false;
+                                testResult.innerHTML = '';
+                                if (!res.success) {
+                                    var errP = document.createElement('p');
+                                    errP.style.color = '#b32d2e';
+                                    errP.textContent = res.data.message;
+                                    testResult.appendChild(errP);
+                                    return;
+                                }
+
+                                var okP = document.createElement('p');
+                                okP.style.color = '#1e7e34';
+                                okP.textContent = '<?php echo esc_js(__('Connection OK. Detected fields:', 'jsonifywp')); ?>';
+                                testResult.appendChild(okP);
+
+                                if (res.data.fields.length) {
+                                    var chipsP = document.createElement('p');
+                                    res.data.fields.forEach(function(f) {
+                                        var chip = document.createElement('button');
+                                        chip.type = 'button';
+                                        chip.className = 'button button-small jsonifywp-field-chip';
+                                        chip.style.margin = '2px';
+                                        chip.title = '<?php echo esc_js(__('Add as mapped field', 'jsonifywp')); ?>';
+                                        chip.textContent = f; // textContent only: field names come from an external API response.
+                                        chip.addEventListener('click', function() { addFieldRow(f, ''); });
+                                        chipsP.appendChild(chip);
+                                    });
+                                    testResult.appendChild(chipsP);
+                                }
+
+                                var pre = document.createElement('pre');
+                                pre.style.cssText = 'max-height:200px; overflow:auto; background:#fff; padding:8px; border:1px solid #ccd0d4;';
+                                pre.textContent = res.data.preview; // textContent only: preview holds untrusted API content.
+                                testResult.appendChild(pre);
+                            })
+                            .catch(function() {
+                                testBtn.disabled = false;
+                                testResult.innerHTML = '<p style="color:#b32d2e;"><?php echo esc_js(__('Request failed.', 'jsonifywp')); ?></p>';
+                            });
+                    });
                 }
             });
         </script>
