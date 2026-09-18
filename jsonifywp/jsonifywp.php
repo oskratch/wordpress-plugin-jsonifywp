@@ -23,7 +23,7 @@ define('JSONIFYWP_URL', plugin_dir_url(__FILE__));
 require_once JSONIFYWP_DIR . 'includes/class-jsonifywp-db.php';
 require_once JSONIFYWP_DIR . 'includes/class-jsonifywp-admin.php';
 require_once JSONIFYWP_DIR . 'includes/class-jsonifywp-shortcode.php';
-require_once JSONIFYWP_DIR . 'includes/options.php';
+require_once JSONIFYWP_DIR . 'includes/jsonifywp-options.php';
 
 add_action('plugins_loaded', function() {
     load_plugin_textdomain('jsonifywp', false, dirname(plugin_basename(__FILE__)) . '/languages');
