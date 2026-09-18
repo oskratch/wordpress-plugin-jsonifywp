@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/jsonifywp-v1.4.0...v1.5.0) (2026-09-18)
+
+
+### Features
+
+* add configurable field labels for generic templates ([1e60058](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/1e600581c3458625136f10c4eb4e779bb19e37d1))
+* validate templates against disk and add connection test to endpoint editor ([ad7fab6](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/ad7fab6be0b9334c1cfcb4ed5b810e7a54362a07))
+
+
+### Miscellaneous Chores
+
+* remove release-please, manage versioning manually ([5b66e61](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/5b66e613e2b76b69ec0531e27b50b0389479b6df))
+* rename options.php to jsonifywp-options.php for naming consistency ([ed6e5a5](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/ed6e5a5409ab8ad9b3b3f466cf6abe02c00754aa))
+* **docs:** document field labels, connection test and security notes ([228d27d](https://github.com/oskratch/wordpress-plugin-jsonifywp/commit/228d27d6a4addd9388c7d2e697d9c700bcb55dfc))
+
 ## [1.4.0](https://github.com/oskratch/wordpress-plugin-jsonifywp/compare/jsonifywp-v1.3.0...jsonifywp-v1.4.0) (2026-06-30)
 
 
