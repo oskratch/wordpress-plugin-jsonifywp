@@ -6,15 +6,14 @@ JsonifyWP is a WordPress plugin that lets you manage custom API endpoints—each
 
 ## Features
 
-- **Admin interface** to manage endpoints with full CRUD and duplication support
-- **Custom database table** (`wp_jsonifywp`) for all endpoint configurations
-- **Separate list and detail templates**, selectable per endpoint
-- **Flexible shortcodes** to embed API data anywhere in your content
-- **Extensible template system** — drop a `.php` file in the templates folder and it appears in the selector
-- **Two operation modes**: list-with-detail navigation or list-only with server-side pagination
-- **Smart URL handling** — relative detail URLs are automatically prefixed with the configured API domain
-- **Endpoint duplication** for quick setup of similar configurations
-- **Multilingual support** with Catalan and Spanish translations included
+- **Admin screen** to create, edit, duplicate and delete endpoints
+- **Own database table** (`wp_jsonifywp`) for the endpoint settings
+- **List and detail templates**, chosen per endpoint
+- **Shortcodes** to place API data on any page or post
+- **Templates as plain PHP files**: drop a `.php` file in the templates folder and it shows up in the selector
+- **Two modes**: list with detail pages, or list only with server-side pagination
+- **Relative detail URLs** get the configured API domain prepended
+- Catalan and Spanish translations included
 
 ## Installation
 
